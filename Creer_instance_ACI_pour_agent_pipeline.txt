@@ -1,0 +1,2 @@
+az container create -g rg_devops -n aci-devops --image mcr.microsoft.com/azure-pipelines/vsts-agent --cpu 1 --memory 7 --environment-variables VSTS_ACCOUNT=XXXX@alyf-formation.fr VSTS_TOKEN=2hxpkfijwwergdxessyg56r74zva5upob4ror7bbk6rh4oikyqga VSTS_AGENT=agent_devops VSTS_POOL=Default
+
