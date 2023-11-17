@@ -1,0 +1,36 @@
+# CREATION DE L'APPLICATION DANS DOCKER COMPOSE:
+# On va d'abord créer notre application avec Docker:
+git clone https://github.com/Azure-Samples/aks-store-demo.git
+cd aks-store-demo
+# Parcourez (en l'ouvrant avec cat) le fichier Docker Compose docker-compose-quickstart.yml pour voir ce que contient l'application:
+cat docker-compose-quickstart.yml
+# Création de l'image du conteneur, téléchargement de l'image Redis, et démarrage de l'application avec Compose:
+docker compose -f docker-compose-quickstart.yml up -d
+# Vérification de la présence des images:
+docker images
+# Visualisation des conteneurs en cours d'exécution:
+docker ps
+(# POUR INFO, NE PAS EXECUTER MAINTENANT: pour arrêter les conteneurs: docker compose down)
+(# A noter qu'il est possible de tester l'application sur un environnement LOCAL en la lançant avec Docker Compose et en se connectant à http://localhost:8080)
+
+# CREATION DU REGISTRE DE CONTENEURS:
+# Création du groupe de ressources:
+az group create --name myResourceGroup --location eastus
+# D'acord créer un registre ACR via le portail (alternative: voir support de formation pour la création via l'interface graphique); remplacer $ACRNAME par le nom de votre registre:
+az acr create --resource-group myResourceGroup --name $ACRNAME --sku Basic
+# Build et push des images de l'application vers le registre ACR:
+az acr build --registry $ACRNAME --image aks-store-demo/product-service:latest ./src/product-service/
+az acr build --registry $ACRNAME --image aks-store-demo/order-service:latest ./src/order-service/
+az acr build --registry $ACRNAME --image aks-store-demo/store-front:latest ./src/store-front/
+# Vérification:
+az acr repository list --name $ACRNAME --output table
+
+
+# CREATON DU CLUSTER AKS:
+# Ensuite, créer le cluster AKS remplacer <acrName> par le nom de votre ACR):
+az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 2 --generate-ssh-keys --attach-acr <acrName>
+# Puis on configure kubectl pour qu'il se connecte à notre cluster avec get-credentials:
+az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
+# Vérifions la connexion du cluster aux noeuds:
+kubectl get nodes
+# 
