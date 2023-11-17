@@ -16,7 +16,9 @@ docker ps
 # CREATION DU REGISTRE DE CONTENEURS:
 # Création du groupe de ressources:
 az group create --name myResourceGroup --location eastus
-# D'acord créer un registre ACR via le portail (alternative: voir support de formation pour la création via l'interface graphique); remplacer $ACRNAME par le nom de votre registre:
+# D'acord créer un registre ACR via le portail (alternative: voir support de formation pour la création via l'interface graphique):
+# Astuce: pour remplacer automatiquement $ACRNAME par le nom de votre registre dans la suite du code:
+ACRNAME='nom_de_mon_registre'
 az acr create --resource-group myResourceGroup --name $ACRNAME --sku Basic
 # Build et push des images de l'application vers le registre ACR:
 az acr build --registry $ACRNAME --image aks-store-demo/product-service:latest ./src/product-service/
@@ -33,4 +35,36 @@ az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 
 az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
 # Vérifions la connexion du cluster aux noeuds:
 kubectl get nodes
-# 
+
+# MISE A JOUR DES URL DES IMAGES DANS LE MANIFESTE:
+# Afin de déployer l'application, nous avons besoin de récupérer le nom du serveur de login (nota: il est aussi possible de le récupérer via l'interface graphique en allant dans la ressource ACR):
+az acr list --resource-group myResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
+# Aller dans le répertoire ask-store-demo où se trouve le manifeste K8s, et l'ouvrir avec nano ou vi:
+nano aks-store-quickstart.yaml
+# Remplacer dans les lignes 91, 157, et 199, la chaine de caractère 'ghcr.io/azure-samples' par 'aksmt23.azurecr.io' dans l'URL de l'image. Voici un extrait du code concerné:
+containers:
+...
+- name: order-service
+ image: ghcr.io/azure-samples.azurecr.io/aks-store-demo/order-service:latest
+...
+- name: product-service
+ image: ghcr.io/azure-samples.azurecr.io/aks-store-demo/product-service:latest
+...
+- name: store-front
+ image: ghcr.io/azure-samples.azurecr.io/aks-store-demo/store-front:latest
+...
+
+# DEPLOIEMENT DE L'APPLICATION:
+kubectl apply -f aks-store-quickstart.yaml
+# Vous devriez voir en output que chacun des srvices est déployé et créé.
+
+# TEST DE L'APPLICATION:
+# K8s expose l'application via l'URL publique au bout de quelques secondes ou minutes. Pour surveiller en temps réel sa disponibilité publique (Nota: --watch suspend le terminal):
+kubectl get service store-front --watch
+# Initialement l'affichage ressemblera à ceci (à noter l'état 'pending'):
+store-front   LoadBalancer   10.0.34.242   <pending>     80:30676/TCP   5s
+# Puis l'adresse IP finale devrait apparaitre à la place de 'pending':
+store-front   LoadBalancer   10.0.34.242   52.179.23.131   80:30676/TCP   67s
+
+# On peut visualiser les pods:
+kubectl get pods
