@@ -1,0 +1,10 @@
+# Pré-requis:
+- Compte Azure avec le role Virtual Machine Contributor (https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#virtual-machine-contributor)
+- VM Windows ou Linux Ubuntu 18.04 LTS
+- La VM peut se connecter vers l'extérieur (pour aller chercher des paquetages à installer)
+- Connexion RDP ou SSH à la VM
+- Etre Azure Connected Machine Resource Administrator (https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#azure-connected-machine-resource-administrator) ou Contributor sur le groupe de ressources
+
+# Avertissement: utiliser une VM non-Azure car sinon il y aura un conflit entre l'agent Azure Connected Machine et les agents déjà présents dans un VM Azure.
+
+# 
