@@ -1,10 +1,32 @@
 # Pré-requis:
 - Compte Azure avec le role Virtual Machine Contributor (https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#virtual-machine-contributor)
-- VM Windows ou Linux Ubuntu 18.04 LTS
+- Systèmes compatibles:
+    Amazon Linux 2 and 2023
+    Azure Linux (CBL-Mariner) 1.0, 2.0
+    Azure Stack HCI
+    CentOS Linux 7 and 8
+    Debian 10, 11, and 12
+    Oracle Linux 7 and 8
+    Red Hat Enterprise Linux (RHEL) 7, 8 and 9
+    Rocky Linux 8
+    SUSE Linux Enterprise Server (SLES) 12 SP3-SP5 and 15
+    Ubuntu 16.04, 18.04, 20.04, and 22.04 LTS
+    Windows 10, 11 (see client operating system guidance)
+    Windows IoT Enterprise
+    Windows Server 2008 R2 SP1, 2012, 2012 R2, 2016, 2019, and 2022
+        Both Desktop and Server Core experiences are supported
+        Azure Editions are supported on Azure Stack HCI
+
 - La VM peut se connecter vers l'extérieur (pour aller chercher des paquetages à installer)
 - Connexion RDP ou SSH à la VM
 - Etre Azure Connected Machine Resource Administrator (https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#azure-connected-machine-resource-administrator) ou Contributor sur le groupe de ressources
 
 # Avertissement: utiliser une VM non-Azure car sinon il y aura un conflit entre l'agent Azure Connected Machine et les agents déjà présents dans un VM Azure.
 
-# 
+# Installation de Azure Connected Machine Agent sur Ubuntu (voir le support de formation pour Windows):
+# Exécuter dans le répertoire de téléchargeent du script:
+./OnboardingScript.sh
+
+# Vérifier la présence de la machine dans Azure Portal -> Azure Arc Machines
+
+
