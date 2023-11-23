@@ -16,7 +16,6 @@
     Windows Server 2008 R2 SP1, 2012, 2012 R2, 2016, 2019, and 2022
         Both Desktop and Server Core experiences are supported
         Azure Editions are supported on Azure Stack HCI
-
 - La VM peut se connecter vers l'extérieur (pour aller chercher des paquetages à installer)
 - Connexion RDP ou SSH à la VM
 - Etre Azure Connected Machine Resource Administrator (https://learn.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#azure-connected-machine-resource-administrator) ou Contributor sur le groupe de ressources
