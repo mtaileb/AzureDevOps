@@ -1,4 +1,5 @@
 # CREATION DE L'APPLICATION DANS DOCKER COMPOSE:
+# /!\ LANCER UNE VM AVEC DOCKER POUR LES COMMANDES SUIVANTES.
 # On va d'abord créer notre application avec Docker:
 git clone https://github.com/Azure-Samples/aks-store-demo.git
 cd aks-store-demo
