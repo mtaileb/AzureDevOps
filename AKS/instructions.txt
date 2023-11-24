@@ -42,7 +42,7 @@ kubectl get nodes
 az acr list --resource-group myResourceGroup --query "[].{acrLoginServer:loginServer}" --output table
 # Aller dans le répertoire ask-store-demo où se trouve le manifeste K8s, et l'ouvrir avec nano ou vi:
 nano aks-store-quickstart.yaml
-# Remplacer dans les lignes 91, 157, et 199, la chaine de caractère 'ghcr.io/azure-samples' par 'aksmt23.azurecr.io' dans l'URL de l'image. Voici un extrait du code concerné:
+# Remplacer dans les lignes 91, 157, et 199, la chaine de caractère 'ghcr.io/azure-samples' par votre ACR dans l'URL de l'image. Voici un extrait du code concerné:
 containers:
 ...
 - name: order-service
