@@ -1,3 +1,5 @@
+# Nous allons ici déployer sur AKS l'application testée lors du TP2: DOCKER COMPOSE.
+
 # CREATION DU REGISTRE DE CONTENEURS:
 # Création du groupe de ressources:
 az group create --name myResourceGroup --location eastus
