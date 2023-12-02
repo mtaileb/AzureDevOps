@@ -73,5 +73,105 @@ Vous allez ensuite déclencher manuellement l'exécution du pipeline. Cette éta
     Sélectionnez votre artefact publié (Tailspin.Space.Game.Web.zip est votre artefact de build. Ce fichier contient votre application générée et ses dépendances).
 Vous disposez maintenant d’un pipeline de build pour le projet web Space Game. Ensuite, vous allez ajouter une phase de déploiement pour déployer votre artefact de build sur Azure App Service.
 
+Créer l’instance App Service:
+    Connectez-vous au portail Azure.
+    Sélectionnez App Services dans le volet gauche.
+    Sélectionnez Créer>Application web pour créer une application web.
+    Sous l’onglet Général, entrez les valeurs indiquées ci-dessous (voir aussi le support de formation circa p. 258):
+
+Paramètre 	Valeur
+Détails du projet 	
+Abonnement 	votre abonnement
+Groupe de ressources 	Sélectionnez Créer nouveau, puis entrez tailspin-space-game-rg et sélectionnez OK.
+Détails de l’instance 	
+Nom 	Indiquez un nom unique, comme tailspin-space-game-1234. Ce nom doit être unique au sein d’Azure. Il devient partie intégrante du nom de domaine. Dans la pratique, choisissez un nom qui décrit votre service. Notez le nom. Il sera utile plus tard.
+Publier 	Code
+Pile d’exécution 	.NET 6 (LTS)
+Système d'exploitation 	Linux
+Région 	Sélectionnez une région, de préférence proche de vous.
+Plans tarifaires 	
+Plan Linux 	Acceptez la valeur par défaut.
+Plan tarifaire 	Sélectionnez le niveau tarifaire B1 de base dans le menu déroulant.
+
+    Sélectionnez Vérifier + créer, passez en revue le formulaire, puis sélectionnez Créer. Le déploiement prend quelques         instants.
+    Une fois le déploiement effectué, sélectionnez Accéder à la ressource. App Service Essentials affiche les détails            relatifs à votre déploiement.
+    Sélectionnez l’URL pour vérifier l’état de votre App Service.
+
+Créer une connexion de service:
 
 
+    Dans Azure DevOps, accédez à votre projet Space Game - web - Release.
+
+    Dans le coin inférieur gauche de la page, sélectionnez Paramètres du projet.
+
+    Sous Pipelines, sélectionnez Connexions de service.
+
+    Sélectionnez Nouvelle connexion de service, Azure Resource Manager, puis Suivant.
+
+    Sélectionnez Principal du service (automatique), puis Suivant.
+
+    Renseignez les champs obligatoires comme suit. Si vous y êtes invité, connectez-vous à votre compte Microsoft.
+    Champ 	Valeur
+    Niveau de portée 	Abonnement
+    Abonnement 	Votre abonnement Azure
+    Groupe de ressources 	tailspin-space-game-rg
+    Nom de la connexion de service 	Resource Manager - Tailspin - Space Game
+
+    Vérifiez que l’option Accorder une autorisation d’accès à tous les pipelines est sélectionnée.
+
+    Cliquez sur Enregistrer.
+
+Ajouter la phase de génération à votre pipeline
+
+Un pipeline multiphase vous permet de définir des phases distinctes par lesquelles passe votre modification dès qu’elle est promue via le pipeline. Chaque phase définit l'agent, les variables et les étapes nécessaires à l'exécution de cette phase du pipeline. Dans cette section, vous définissez une phase pour effectuer la génération. Vous définirez une deuxième phase pour déployer l’application web dans App Service.
+
+Pour convertir votre configuration de build existante en pipeline multiphase, vous devez ajouter une section stages à votre configuration, puis ajouter une ou plusieurs sections stage pour chaque phase de votre pipeline. Les phases se décomposent en travaux, qui sont une série d’étapes qui s’exécutent de manière séquentielle en tant qu’unité.
+    À partir de votre projet dans Visual Studio Code, ouvrez azure-pipelines.yml, puis remplacez son contenu par le code du ficher (version_generation)_azure_pipelines.yml dans le présent dossier Github.
+    À partir du terminal intégré, exécutez les commandes suivantes pour indexer, valider, puis pousser (push) vos modifications vers votre branche distante.
+    Dans Azure Pipelines, accédez à votre pipeline pour afficher les journaux.
+    Une fois la génération terminée, sélectionnez le bouton Précédent pour revenir à la page récapitulative, et vérifiez l’état de votre pipeline et de l’artefact publié.
+
+Créer l'environnement de développement
+Un environnement est une représentation abstraite de votre environnement de déploiement. Les environnements peuvent être utilisés pour définir des critères spécifiques pour votre mise en production, tels que le pipeline dont le déploiement est autorisé dans l’environnement. Les environnements peuvent également être utilisés pour configurer des approbations manuelles, dans le but d’approuver un utilisateur/groupe spécifique avant la reprise du déploiement.
+    Dans Azure Pipelines, sélectionnez Environnements.
+    Sélectionnez Créer un environnement.
+    Sous Nom, entrez dev.
+    Laissez les valeurs par défaut dans les champs restants.
+    Sélectionnez Créer.
+
+Stocker le nom de votre application web dans une variable de pipeline
+
+La phase Déployer que nous allons créer utilisera le nom pour identifier l’instance App Service sur laquelle effectuer le déploiement, par exemple : tailspin-space-game-web-1234.
+
+Vous pourriez coder ce nom en dur dans la configuration du pipeline, mais en le définissant sous forme de variable, votre configuration est plus facile à réutiliser.
+
+    Dans Azure DevOps, sélectionnez Pipelines puis Bibliothèque.
+    Sélectionnez + Groupe de variables pour créer un groupe de variables.
+
+    Entrez Release comme nom du groupe de variables.
+
+    Sélectionnez Ajouter sous Variables pour ajouter une nouvelle variable.
+
+    Entrez WebAppName comme nom de la variable et le nom de votre instance App Service comme valeur : par exemple tailspin-space-game-web-1234.
+
+    Cliquez sur Enregistrer.
+
+Ajouter la phase de déploiement à votre pipeline
+
+Nous allons étendre notre pipeline en ajoutant une phase de déploiement pour déployer Space Game sur App Service, en utilisant des tâches download et AzureWebApp@1 pour télécharger l’artefact de build puis le déployer.
+
+    À partir de Visual Studio Code, remplacez le contenu de azure-pipelines.yml par le code yaml du fichier (version_generation)_azure_pipelines.yml dans le présent répertoire.
+
+Notez la section mise en évidence et la façon dont nous utilisons les tâches download et AzureWebApp@1. Le pipeline extrait le $(WebAppName) à partir du groupe de variables que nous avons créé.
+
+Notez également comment nous utilisons environment pour déployer dans l’environnement de développement.
+
+À partir du terminal intégré, ajoutez azure-pipelines.yml à l’index. Commitez ensuite la modification et poussez-la vers GitHub.
+
+Dans Azure Pipelines, accédez à votre pipeline pour afficher les journaux.
+
+Une fois la génération terminée, sélectionnez le bouton Précédent pour revenir à la page récapitulative et vérifiez l’état de vos phases. Les deux phases se sont terminées avec succès dans notre cas.
+
+Voir le site web déployé sur App Service
+
+    Si l’onglet App Service est toujours ouvert, il vous suffit d’actualiser la page. Sinon, accédez à votre instance Azure App Service dans le Portail Azure et sélectionnez l’URL de l’instance, par exemple https://tailspin-space-game-web-1234.azurewebsites.net
