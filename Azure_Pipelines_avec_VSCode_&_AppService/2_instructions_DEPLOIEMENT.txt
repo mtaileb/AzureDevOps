@@ -53,6 +53,12 @@ git checkout -B release-pipeline upstream/release-pipeline
 # Ouvrons le fichier azure-pipelines.yml pour le commenter:
 code azure-pipelines.yml
 
+# Faire le push vers Azure Repos (après avoir supprimé l'ancien repo 'origin' pour le remplacer):
+git remote remove origin
+git remote add origin https://mehditaileb@dev.azure.com/mehditaileb/SpaceGames/_git/Space%20Game%20-%20web%20-%20Release
+(alternative: git remote set-url origin https://mehditaileb@dev.azure.com/mehditaileb/SpaceGames/_git/Space%20Game%20-%20web%20-%20Release)
+git push -u origin --all
+
 Exécuter le pipeline
 À ce stade, vous disposez des éléments suivants :
     Une duplication (fork) du référentiel mslearn-tailspin-spacegame-web-deploy sur votre compte GitHub
