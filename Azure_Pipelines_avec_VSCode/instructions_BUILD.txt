@@ -1,0 +1,71 @@
+Exécuter un modèle sur Azure Demo Generator qui configure tout pour vous dans votre organisation Azure DevOps: https://azuredevopsdemogenerator.azurewebsites.net/?x-ms-routing-name=self&name=create-release-pipeline
+
+À partir du site Azure DevOps Demo Generator, suivez ces étapes pour exécuter le modèle :
+
+    Sélectionnez Sign In et acceptez les conditions d’utilisation.
+
+    Dans la page Create New Project, sélectionnez votre organisation Azure DevOps, puis entrez un nom de projet, par exemple Space Game - web - Release.
+
+    Sélectionnez Yes, I want to fork this repository>Authorize. Si une fenêtre apparaît, autorisez l’accès à votre compte GitHub.
+
+    Sélectionnez Create Project. L’exécution du modèle prend quelques instants.
+
+Sélectionnez Navigate to project pour accéder à votre projet dans Azure DevOps.
+
+Exécutez la commande suivante pour accéder à votre répertoire de base.
+cd ~
+
+Configurer Git
+Si vous débutez avec Git et GitHub, vous devez d’abord exécuter quelques commandes pour associer votre identité à Git et vous authentifier auprès de GitHub.
+
+Démarrez Visual Studio Code.
+
+Sélectionnez Terminal, puis Nouveau terminal.
+
+# Dans la liste déroulante, sélectionnez Git bash. Si vous préférez utiliser un autre interpréteur de commandes Unix, tel que Zsh, n'hésitez pas à le sélectionner. Git pour Windows fournit Git Bash, qui facilite l’exécution des commandes Git.
+git clone https://github.com/your-name/mslearn-tailspin-spacegame-web-deploy.git
+cd mslearn-tailspin-spacegame-web-deploy
+# Listons les dépôts distants:
+git remote -v
+# Vous voyez que vous avez à la fois un accès en récupération (téléchargement) et en poussée (chargement) à votre dépôt.
+# Origin spécifie votre dépôt sur GitHub. Quand vous dupliquez du code d’un autre dépôt, le dépôt distant d’origine (celui à partir duquel vous avez effectué la duplication) est généralement nommé upstream (amont).
+# Exécutez la commande suivante pour créer un dépôt distant nommé upstream qui pointe vers le dépôt Microsoft :
+git remote add upstream https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy.git
+# Vérifions que c'est pris en compte!
+git remote -v
+# Vous voyez que vous avez toujours à la fois un accès en récupération (téléchargement) et en poussée (chargement) à votre dépôt. Maintenant, vous avez aussi un accès en récupération au dépôt Microsoft.
+# Exécutez la commande suivante à partir du répertoire racine de votre projet.
+code .
+
+# Nota: Si la commande code échoue, vous devez ajouter Visual Studio Code à la variable PATH de votre système. Pour ce faire :
+#    Dans Visual Studio Code, sélectionnez F1, ou sélectionnez Affichage>Palette de commandes pour accéder à la palette de commandes.
+#    Tapez commande interpréteur de commandes pour trouver la commande Commande d’interpréteur de commandes : Installer la commande 'code' dans PATH.
+#    Redémarrez le terminal pour que le nouveau PATH soit pris en compte.
+# Vous êtes maintenant prêt à utiliser le code source de Space Game et la configuration Azure Pipelines à partir de votre environnement de développement local.
+
+# Récupérer (fetch) la branche à partir du GitHub upstream (celui de Microsoft)
+#    Dans Visual Studio Code, ouvrez le terminal intégré.
+#    Exécutez les commandes suivantes pour récupérer (fetch) la branche release-pipeline à partir du dépôt MicrosoftDocs et basculer vers une nouvelle branche upstream/release-pipeline.
+git fetch upstream release-pipeline
+# Switchons maintenons à la branche release-pipeline:
+git checkout -B release-pipeline upstream/release-pipeline
+
+# Ouvrons le fichier azure-pipelines.yml pour le commenter:
+code azure-pipelines.yml
+
+Exécuter le pipeline
+À ce stade, vous disposez des éléments suivants :
+    Une duplication (fork) du référentiel mslearn-tailspin-spacegame-web-deploy sur votre compte GitHub
+    Le référentiel mslearn-tailspin-spacegame-web-deploy cloné localement
+    Une branche nommée release-pipeline qui contient le code source du site web et une configuration initiale d’Azure Pipelines.
+Vous allez ensuite déclencher manuellement l'exécution du pipeline. Cette étape est l’assurance que votre projet est configuré de façon à être généré à partir de votre dépôt GitHub. La configuration initiale du pipeline génère l'application et produit un artefact de build.
+    Accédez à votre projet dans Azure Devops, puis sélectionnez Pipelines.
+    Sélectionnez le pipeline mslearn-tailspin-spacegame-web-deploy. Si vous y êtes invité, veillez à sélectionner Autoriser les ressources pour autoriser la connexion de service.
+    Sélectionnez Exécuter le pipeline, puis sélectionnez la branche release-pipeline dans le menu déroulant Branche/étiquette. Sélectionnez Exécuter.
+    Dans la page Résumé, sélectionnez votre travail de pipeline pour afficher les journaux.
+    Une fois l’exécution terminée, sélectionnez le bouton Précédent pour revenir à la page Résumé.
+    Sélectionnez votre artefact publié (Tailspin.Space.Game.Web.zip est votre artefact de build. Ce fichier contient votre application générée et ses dépendances).
+Vous disposez maintenant d’un pipeline de build pour le projet web Space Game. Ensuite, vous allez ajouter une phase de déploiement pour déployer votre artefact de build sur Azure App Service.
+
+
+
