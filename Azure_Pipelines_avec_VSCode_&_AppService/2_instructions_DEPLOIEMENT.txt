@@ -23,17 +23,17 @@ Démarrez Visual Studio Code.
 Sélectionnez Terminal, puis Nouveau terminal.
 
 # Dans la liste déroulante, sélectionnez Git bash. Si vous préférez utiliser un autre interpréteur de commandes Unix, tel que Zsh, n'hésitez pas à le sélectionner. Git pour Windows fournit Git Bash, qui facilite l’exécution des commandes Git.
-git clone https://github.com/your-name/mslearn-tailspin-spacegame-web-deploy.git
+git clone https://github.com/mtaileb/mslearn-tailspin-spacegame-web-deploy.git
 cd mslearn-tailspin-spacegame-web-deploy
 # Listons les dépôts distants:
 git remote -v
 # Vous voyez que vous avez à la fois un accès en récupération (téléchargement) et en poussée (chargement) à votre dépôt.
 # Origin spécifie votre dépôt sur GitHub. Quand vous dupliquez du code d’un autre dépôt, le dépôt distant d’origine (celui à partir duquel vous avez effectué la duplication) est généralement nommé upstream (amont).
-# Exécutez la commande suivante pour créer un dépôt distant nommé upstream qui pointe vers le dépôt Microsoft :
-git remote add upstream https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy.git
+# Exécutez la commande suivante pour créer un dépôt distant nommé upstream qui pointe vers mon dépôt :
+git remote add upstream https://github.com/mtaileb/mslearn-tailspin-spacegame-web-deploy.git
 # Vérifions que c'est pris en compte!
 git remote -v
-# Vous voyez que vous avez toujours à la fois un accès en récupération (téléchargement) et en poussée (chargement) à votre dépôt. Maintenant, vous avez aussi un accès en récupération au dépôt Microsoft.
+# Vous voyez que vous avez toujours à la fois un accès en récupération (téléchargement) et en poussée (chargement) à votre dépôt. Maintenant, vous avez aussi un accès en récupération à partir de mon dépôt.
 # Exécutez la commande suivante à partir du répertoire racine de votre projet.
 code .
 
