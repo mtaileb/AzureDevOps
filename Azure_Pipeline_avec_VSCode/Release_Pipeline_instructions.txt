@@ -1,0 +1,14 @@
+- Aller récupérer le repo dans Azure Demo Genertator: https://azuredevopsdemogenerator.azurewebsites.net/?x-ms-routing-name=self&name=create-release-pipeline
+À partir du site Azure DevOps Demo Generator, suivez ces étapes pour exécuter le modèle :
+
+    Sélectionnez Sign In et acceptez les conditions d’utilisation.
+
+    Dans la page Create New Project, sélectionnez votre organisation Azure DevOps, puis entrez un nom de projet, par exemple Space Game - web - Release.
+
+    Sélectionnez Yes, I want to fork this repository>Authorize. Si une fenêtre apparaît, autorisez l’accès à votre compte GitHub.
+
+    Sélectionnez Create Project. L’exécution du modèle prend quelques instants.
+
+    Sélectionnez Navigate to project pour accéder à votre projet dans Azure DevOps.
+
+    
