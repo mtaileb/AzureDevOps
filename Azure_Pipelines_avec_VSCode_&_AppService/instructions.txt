@@ -104,7 +104,7 @@ Créer une connexion de service:
 
     Cliquez sur Enregistrer.
 
-Ajouter la phase de génération à votre pipeline
+Ajouter la phase de génération à votre pipeline, i.e. copier le contenu du fichier 1_(Version_generation)_azure-pipelines.yml du présent répertoire à la place du contenu du fichier azure-pipelines.yml.
 
 Un pipeline multiphase vous permet de définir des phases distinctes par lesquelles passe votre modification dès qu’elle est promue via le pipeline. Chaque phase définit l'agent, les variables et les étapes nécessaires à l'exécution de cette phase du pipeline. Dans cette section, vous définissez une phase pour effectuer la génération. Vous définirez une deuxième phase pour déployer l’application web dans App Service.
 
@@ -122,12 +122,9 @@ Un environnement est une représentation abstraite de votre environnement de dé
     Laissez les valeurs par défaut dans les champs restants.
     Sélectionnez Créer.
 
-Stocker le nom de votre application web dans une variable de pipeline
-
+Stocker le nom de votre application web dans une variable de pipeline:
 La phase Déployer que nous allons créer utilisera le nom pour identifier l’instance App Service sur laquelle effectuer le déploiement, par exemple : tailspin-space-game-web-1234.
-
 Vous pourriez coder ce nom en dur dans la configuration du pipeline, mais en le définissant sous forme de variable, votre configuration est plus facile à réutiliser.
-
     Dans Azure DevOps, sélectionnez Pipelines puis Bibliothèque.
     Sélectionnez + Groupe de variables pour créer un groupe de variables.
 
@@ -139,8 +136,7 @@ Vous pourriez coder ce nom en dur dans la configuration du pipeline, mais en le 
 
     Cliquez sur Enregistrer.
 
-Ajouter la phase de déploiement à votre pipeline
-
+Ajouter la phase de déploiement à votre pipeline:
 Nous allons étendre notre pipeline en ajoutant une phase de déploiement pour déployer Space Game sur App Service, en utilisant des tâches download et AzureWebApp@1 pour télécharger l’artefact de build puis le déployer.
 
     À partir de Visual Studio Code, remplacez le contenu de azure-pipelines.yml par le code yaml du fichier (version_generation)_azure_pipelines.yml dans le présent répertoire.
