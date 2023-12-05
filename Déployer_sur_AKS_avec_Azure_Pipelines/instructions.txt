@@ -1,4 +1,4 @@
-# Dupliquez (fork) le dépôt suivant contenant un exemple d’application et un Dockerfile: https://github.com/MicrosoftDocs/pipelines-javascript-docker
+# Dupliquez (fork) le dépôt suivant (pour pouvoir le retrouver dans votre choix de repos dans Azure Pipelines) contenant un exemple d’application et un Dockerfile: https://github.com/MicrosoftDocs/pipelines-javascript-docker
 # Connectez-vous au portail Azure, puis sélectionnez le bouton Cloud Shell dans le coin supérieur droit. Utilisez Azure CLI pour créer un cluster AKS:
 # Create a resource group
 az group create --name myapp-rg --location eastus
