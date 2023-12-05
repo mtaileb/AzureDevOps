@@ -1,0 +1,118 @@
+# Dupliquez (fork) le dépôt suivant contenant un exemple d’application et un Dockerfile: https://github.com/MicrosoftDocs/pipelines-javascript-docker
+# Connectez-vous au portail Azure, puis sélectionnez le bouton Cloud Shell dans le coin supérieur droit. Utilisez Azure CLI pour créer un cluster AKS:
+# Create a resource group
+az group create --name myapp-rg --location eastus
+# Create a container registry
+az acr create --resource-group myapp-rg --name mycontainerregistry --sku Basic
+# Create a Kubernetes cluster
+az aks create --resource-group myapp-rg --name myapp --node-count 1 --enable-addons monitoring --generate-ssh-keys
+
+Se connecter à Azure Pipelines:
+Connectez-vous à Azure Pipelines. Une fois que vous êtes connecté, votre navigateur accède à https://dev.azure.com/my-organization-name et affiche votre tableau de bord Azure DevOps.
+Dans votre organisation sélectionnée, créez un projet. Si votre organisation ne compte aucun projet, l’écran Pour commencer, créez un projet s’affiche. Dans le cas contraire, sélectionnez le bouton Créer un project dans l’angle supérieur droit du tableau de bord.
+
+Créer le pipeline:
+Connecter et sélectionner votre dépôt
+    Connectez-vous à votre organisation Azure DevOps et accédez à votre projet.
+    Accédez à Pipelines, puis sélectionnez Nouveau pipeline.
+    Effectuez les étapes de l’Assistant en sélectionnant d’abord GitHub comme emplacement du code source.
+    Vous serez peut-être redirigé vers GitHub pour vous connecter. Si c’est le cas, entrez vos informations d’identification GitHub.
+    Quand la liste des dépôts s’affiche, sélectionnez le vôtre.
+    Vous serez peut-être redirigé vers GitHub pour pouvoir installer l’application Azure Pipelines. Si c’est le cas, sélectionnez Approuver et installer.
+    Sélectionnez Déployer sur Azure Kubernetes Service.
+    Si vous y êtes invité, sélectionnez l’abonnement dans lequel vous avez créé votre registre et votre cluster.
+    Sélectionnez le cluster myapp.
+    Pour Espace de noms, sélectionnez Existant, puis Par défaut.
+    Sélectionnez le nom de votre registre de conteneurs.
+    Vous pouvez conserver le nom d’image par défaut.
+    Définissez le port de service sur 8080.
+    Définir la case à cocher Activer l’évaluation d’application pour les demandes de tirage pour que la configuration liée à l’évaluation d’application soit incluse dans le fichier YAML du pipeline généré automatiquement lors des étapes suivantes.
+    Sélectionnez Valider et configurer.
+    À mesure qu’Azure Pipelines crée votre pipeline, le processus va effectuer les opérations suivants :
+        Créer une connexion de service de registre Docker pour permettre à votre pipeline d’envoyer (push) des images à votre registre de conteneurs.
+        Créer un environnement et une ressource Kubernetes au sein de l’environnement. Pour un cluster avec RBAC activé, la ressource Kubernetes créée va implicitement créer des objets ServiceAccount et RoleBinding dans le cluster afin que le compte de service créé ne puisse pas effectuer d’opérations en dehors de l’espace de noms choisi.
+        Générer un fichier azure-pipelines.yml, qui définit votre pipeline.
+        Générer des fichiers manifeste Kubernetes. Ces fichiers sont générés en alimentant les modèles deployment.yml et service.yml en fonction des sélections que vous avez effectuées. Lorsque vous êtes prêt, sélectionnez Enregistrer et exécuter.
+    Sélectionnez Enregistrer et exécuter.
+    Vous pouvez remplacer le message de validation par un message qui invite à ajouter un pipeline à notre dépôt. Quand vous êtes prêt, sélectionnez Enregistrer et exécuter pour valider le nouveau pipeline dans votre dépôt, puis lancez la première exécution de votre nouveau pipeline.
+
+Voir votre application se déployer:
+Regardez votre pipeline s’exécuter et observez la phase de génération, puis la phase de déploiement passer tour à tour de bleu (en cours d’exécution) à vert (terminé). Vous pouvez choisir durant quelles phases et tâches vous souhaitez regarder votre pipeline en action.
+Une fois l’exécution du pipeline terminée, examinez ce qui s’est passé, puis observez votre application déployée. À partir du résumé du pipeline :
+    Sélectionnez l’onglet Environnements.
+    Sélectionnez Voir l’environnement.
+    Sélectionnez l’instance de votre application pour l’espace de noms sur lequel vous l’avez déployée. Si vous avez utilisé la valeur par défaut, alors il s’agit de l’application myapp dans l’espace de noms par défaut.
+    Sélectionnez l’onglet Services.
+    Sélectionnez l’adresse IP externe et copiez-la dans votre Presse-papiers.
+    Ouvrez un nouvel onglet de navigateur ou une nouvelle fenêtre, puis entrez l’<adresse IP>:8080.
+Si vous générez notre exemple d’application, Hello World s’affiche dans votre navigateur.
+
+# Mode de génération du pipeline:
+# Quand vous avez terminé de sélectionner les options, effectuez la validation et la configuration du pipeline créé par Azure Pipelines pour vous, à l’aide du modèle Déployer sur Azure Kubernetes Service.
+# La phase de génération utilise la tâche Docker pour générer et envoyer (push) l’image au registre de conteneurs Azure.
+- stage: Build
+  displayName: Build stage
+  jobs:  
+  - job: Build
+    displayName: Build job
+    pool:
+      vmImage: $(vmImageName)
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(dockerRegistryServiceConnection)
+        tags: |
+          $(tag)
+
+    - task: PublishPipelineArtifact@1
+      inputs:
+        artifactName: 'manifests'
+        path: 'manifests'
+
+# La phase de déploiement utilise la tâche du manifeste Kubernetes pour créer le imagePullSecret que les nœuds de cluster Kubernetes exigent de tirer (pull) de la ressource Azure Container Registry. Les fichiers manifeste sont ensuite utilisés par la tâche du manifeste Kubernetes pour effectuer le déploiement sur le cluster Kubernetes. Les fichiers manifeste (service.yml et deployment.yml) ont été générés lorsque vous avez utilisé le modèle Déployer sur Azure Kubernetes Service.
+- stage: Deploy
+  displayName: Deploy stage
+  dependsOn: Build
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy job
+    pool:
+      vmImage: $(vmImageName)
+    environment: 'myenv.aksnamespace' #customize with your environment
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: DownloadPipelineArtifact@2
+            inputs:
+              artifactName: 'manifests'
+              downloadPath: '$(System.ArtifactsDirectory)/manifests'
+
+          - task: KubernetesManifest@0
+            displayName: Create imagePullSecret
+            inputs:
+              action: createSecret
+              secretName: $(imagePullSecret)
+              namespace: $(k8sNamespace)
+              dockerRegistryEndpoint: $(dockerRegistryServiceConnection)
+
+          - task: KubernetesManifest@0
+            displayName: Deploy to Kubernetes cluster
+            inputs:
+              action: deploy
+              namespace: $(k8sNamespace)
+              manifests: |
+                $(System.ArtifactsDirectory)/manifests/deployment.yml
+                $(System.ArtifactsDirectory)/manifests/service.yml
+              imagePullSecrets: |
+                $(imagePullSecret)
+              containers: |
+                $(containerRegistry)/$(imageRepository):$(tag)
+
+# Nettoyer les ressources:
+# Chaque fois que vous avez terminé d’utiliser les ressources que vous avez créées, vous pouvez utiliser la commande suivante pour les supprimer :
+az group delete --name myapp-rg
