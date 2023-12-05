@@ -16,7 +16,7 @@ az acr repository list --name $ACRNAME --output table
 
 # CREATON DU CLUSTER AKS:
 # Ensuite, créer le cluster AKS remplacer <acrName> par le nom de votre ACR):
-az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 2 --generate-ssh-keys --attach-acr <acrName>
+az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1  --enable-addons monitoring --generate-ssh-keys --attach-acr <acrName>
 # Puis on configure kubectl pour qu'il se connecte à notre cluster avec get-credentials:
 az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
 # Vérifions la connexion du cluster aux noeuds:
