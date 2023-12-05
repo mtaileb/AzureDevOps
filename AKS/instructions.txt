@@ -53,4 +53,8 @@ store-front   LoadBalancer   10.0.34.242   <pending>     80:30676/TCP   5s
 store-front   LoadBalancer   10.0.34.242   52.179.23.131   80:30676/TCP   67s
 # On peut visualiser les pods:
 kubectl get pods
+# Supprimez un des pods; puis réexécutez kubectl get pods:
+kubectl delete pods pod_name --grace-period=0 --force
+# Que s'est-il passé?
+
 # Ouvrir l'appli via l'URL indiquée.
