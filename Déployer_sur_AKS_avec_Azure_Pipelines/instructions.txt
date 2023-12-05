@@ -26,7 +26,7 @@ Connecter et sélectionner votre dépôt
     Sélectionnez le nom de votre registre de conteneurs.
     Vous pouvez conserver le nom d’image par défaut.
     Définissez le port de service sur 8080.
-    Définir la case à cocher Activer l’évaluation d’application pour les demandes de tirage pour que la configuration liée à l’évaluation d’application soit incluse dans le fichier YAML du pipeline généré automatiquement lors des étapes suivantes.
+    Définir la case à cocher Activer l’évaluation d’application (i.e. chaque pull request permettra d'évaluer le changement avant un merge) pour les demandes de tirage pour que la configuration liée à l’évaluation d’application soit incluse dans le fichier YAML du pipeline généré automatiquement lors des étapes suivantes.
     Sélectionnez Valider et configurer.
     À mesure qu’Azure Pipelines crée votre pipeline, le processus va effectuer les opérations suivants :
         Créer une connexion de service de registre Docker pour permettre à votre pipeline d’envoyer (push) des images à votre registre de conteneurs.
