@@ -7,6 +7,8 @@ az group create --name myResourceGroup --location eastus
 # Astuce: pour remplacer automatiquement $ACRNAME par le nom de votre registre dans la suite du code:
 ACRNAME='nom_de_mon_registre'
 az acr create --resource-group myResourceGroup --name $ACRNAME --sku Basic
+# Cloner le repo ci-dessous (si ce n'est déjà fait dans le TP2: DOCKER COMPOSE):
+git clone https://github.com/Azure-Samples/aks-store-demo.git
 # Build et push des images de l'application vers le registre ACR:
 az acr build --registry $ACRNAME --image aks-store-demo/product-service:latest ./src/product-service/
 az acr build --registry $ACRNAME --image aks-store-demo/order-service:latest ./src/order-service/
