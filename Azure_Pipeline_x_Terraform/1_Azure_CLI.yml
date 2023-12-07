@@ -1,0 +1,29 @@
+variables:
+
+  terraformstoragerg: 'terraformrg14'
+
+  terraformstorageaccount: 'monstoraccntmt1234'
+
+
+
+steps:
+
+- task: AzureCLI@1
+
+  displayName: 'Azure CLI '
+
+  inputs:
+
+    azureSubscription: 'Azure subscription 1 (36b4ced8-3d59-4bb6-a721-ccb9543909bc)'
+
+    scriptLocation: inlineScript
+
+    inlineScript: |
+     call az group create --location westus --name $(terraformstoragerg)
+     
+     call az storage account create --name $(terraformstorageaccount) --resource-group $(terraformstoragerg) --location westus --sku Standard_LRS
+     
+     call az storage container create --name terraform --account-name $(terraformstorageaccount)
+     
+     call az storage account keys list -g $(terraformstoragerg) -n $(terraformstorageaccount)
+
