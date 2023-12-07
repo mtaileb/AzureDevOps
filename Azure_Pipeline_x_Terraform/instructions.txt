@@ -1,1 +1,2 @@
 Dans ce répertoire se trouvent les spécifications YAML des tâches du pipeline de release.
+Voir le support de formation pour l'ensemble des étapes.
