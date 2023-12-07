@@ -1,0 +1,17 @@
+steps:
+
+- task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
+
+  displayName: 'Terraform : azurerm'
+
+  inputs:
+
+    command: apply
+
+    workingDirectory: '$(System.DefaultWorkingDirectory)/_PartsUnlimited/drop/Terraform'
+
+    commandOptions: '-auto-approve'
+
+    environmentServiceNameAzureRM: 'Azure subscription 1 (XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)'
+
+
