@@ -1,0 +1,18 @@
+variables:
+
+  appservicename: 'mawbppmt1234'
+
+
+
+steps:
+
+- task: AzureRmWebAppDeployment@4
+
+  displayName: 'Azure App Service Deploy: $(appservicename)'
+
+  inputs:
+
+    azureSubscription: 'Azure subscription 1 (XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX)'
+
+    WebAppName: '$(appservicename)'
+
