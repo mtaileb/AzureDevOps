@@ -1,28 +1,14 @@
-variables:
-
-  terraformstoragerg: 'terraformrg14'
-
-  terraformstorageaccount: 'monstoraccntmt1234'
-
-
-
 steps:
 
 - task: ms-devlabs.custom-terraform-tasks.custom-terraform-release-task.TerraformTaskV4@4
 
-  displayName: 'Terraform : init'
+  displayName: 'Terraform : azurerm'
 
   inputs:
 
+    command: plan
+
     workingDirectory: '$(System.DefaultWorkingDirectory)/_PartsUnlimited/drop/Terraform'
 
-    backendServiceArm: 'Azure subscription 1 (XXXXXXXXXXXXXXXXXXXXXXXXX)'
-
-    backendAzureRmResourceGroupName: '$(terraformstoragerg)'
-
-    backendAzureRmStorageAccountName: '$(terraformstorageaccount)'
-
-    backendAzureRmContainerName: terraform
-
-    backendAzureRmKey: terraform.tfstate
+    environmentServiceNameAzureRM: 'Azure subscription 1 (XXXXXXXXXXXXXXXXXXXXXXXXXXX)'
 
