@@ -1,0 +1,18 @@
+steps:
+
+- task: qetza.replacetokens.replacetokens-task.replacetokens@5
+
+  displayName: 'Replace tokens in **/*.tf'
+
+  inputs:
+
+    targetFiles: '**/*.tf'
+
+    tokenPattern: custom
+
+    tokenPrefix: '__'
+
+    tokenSuffix: '__'
+
+    escapeType: none
+
