@@ -1,1 +1,1 @@
-Voir support de formation, et les YAML dans ce même dossier.
+Dans ce répertoire se trouvent les spécifications YAML des tâches du pipeline de release.
