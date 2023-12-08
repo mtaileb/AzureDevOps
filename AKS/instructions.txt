@@ -9,6 +9,8 @@ ACRNAME='nom_de_mon_registre'
 az acr create --resource-group myResourceGroup --name $ACRNAME --sku Basic
 # Cloner le repo ci-dessous (si ce n'est déjà fait dans le TP2: DOCKER COMPOSE):
 git clone https://github.com/Azure-Samples/aks-store-demo.git
+# Se déplacer dans le répertoire du repo local:
+cd aks-store-demo
 # Build et push des images de l'application vers le registre ACR:
 az acr build --registry $ACRNAME --image aks-store-demo/product-service:latest ./src/product-service/
 az acr build --registry $ACRNAME --image aks-store-demo/order-service:latest ./src/order-service/
@@ -18,7 +20,7 @@ az acr repository list --name $ACRNAME --output table
 
 # CREATON DU CLUSTER AKS:
 # Ensuite, créer le cluster AKS remplacer <acrName> par le nom de votre ACR):
-az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1  --enable-addons monitoring --generate-ssh-keys --attach-acr <acrName>
+az aks create --resource-group myResourceGroup --name myAKSCluster --node-count 1  --enable-addons monitoring --generate-ssh-keys --attach-acr $ACRNAME
 # Puis on configure kubectl pour qu'il se connecte à notre cluster avec get-credentials:
 az aks get-credentials --resource-group myResourceGroup --name myAKSCluster
 # Vérifions la connexion du cluster aux noeuds:
