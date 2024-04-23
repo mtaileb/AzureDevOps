@@ -4,7 +4,7 @@
 # Création du groupe de ressources:
 az group create --name myResourceGroup --location eastus
 # Pour afficher la liste des régions Azure: az account list-locations --output table
-# D'abord créer un registre ACR (alternative: voir support de formation pour la création via l'interface graphique):
+# D'abord créer un registre ACR en ligne de commande comme indiqué ci-dessous:
 # Astuce: pour remplacer automatiquement $ACRNAME par le nom de votre registre dans la suite du code:
 ACRNAME='nomdemonregistre'
 az acr create --resource-group myResourceGroup --name $ACRNAME --sku Basic
