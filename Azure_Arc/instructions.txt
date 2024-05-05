@@ -1,1 +1,36 @@
 
+
+# Créons un Principal de Service avec le rôle de Contributeur:
+  subscriptionId=$(az account show --query id --output tsv)
+  az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
+
+# Copier/coller dans Bloc Notes (ou un autre éditeur) l'output suite à la création du Principal de Service, et notamment l'Id de l'app, le mot-de-passe, et l'ID du tenant. On en aura besoin plus loin.
+
+# Nous devons enregistrer les providers de ressources nécessaires pour utiliser des serveurs activés avec Arc (nota: l'enregistrement effectif peut prendre jusqu'à : minutes)
+  az provider register --namespace 'Microsoft.HybridCompute'
+  az provider register --namespace 'Microsoft.GuestConfiguration'
+  az provider register --namespace 'Microsoft.HybridConnectivity'
+
+# Option 1: Pour un déploiement via Azure Portal (version graphique), voir le support (nota: récupérer les informations d'output déjà sauvegardées: ID app, mdp, ID tenan pour remplir le formulaire)
+# Ensuite aller dans le groupe de sécurité déployé (Arc-Win-Demo-NSG), puis dans traffic entrant, et ajouter une règle de connexion RDP en autorisant l'adresse IP locale (AllowMyIPAddressRDPInbound)
+# Se connecter à la machine en RDP pour voir le script d'activation Arc s'exécuter (il est possible qu'il ait fini de s'exécuter lorsque vous vous connectez)
+# Pour vérifier qu'Arc a été activé avec succès sur cette machine, raffraichir le groupe de ressources, on devrait y voir une ressource supplémentaire 'Arc-Win-Demo' de type 'Machine - Azure Arc'
+
+# Option 2: Déploiement par la ligne de commande:
+# Cloner le repo suivant:
+git clone https://github.com/microsoft/azure_arc.git
+
+# Editer le fichier azuredeploy.parameters.json en entrant les paramètres mis de côté précédemment (voir ligne 7)
+nano azure_arc_servers_jumpstart/azure/windows/arm_template/azuredeploy.parameters.json
+
+# Une fois le fichier complété, on peut commencer le déploiement, qui comme on peut le voir à la ligne 31, va récupérer les paramètres dans ce même fichier qu'on a complété:
+  az group create --name <Name of the Azure resource group> --location <Azure Region> --tags "Project=jumpstart_azure_arc_servers"
+  az deployment group create \
+  --resource-group <Name of the Azure resource group> \
+  --name <The name of this deployment> \
+  --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/azure/windows/arm_template/azuredeploy.json \
+  --parameters <The _azuredeploy.parameters.json_ parameters file location>
+
+# Une fois le provisioning terminé, pour vérifier qu'Arc a été activé avec succès sur cette machine, raffraichir le groupe de ressources dans Azure Portal, on devrait y voir une ressource supplémentaire 'Arc-Win-Demo' de type 'Machine - Azure Arc'
+
+# A partir de là il est possible d'administrer cette machine comme on peut le faire avec n'importe-quelle ressource créée dans Azure.
