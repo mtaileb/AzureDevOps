@@ -1,6 +1,10 @@
+# Dans ce qui suit nous allons créer un VM dans Azure, puis nous allons y exécuter un script d'onboarding (inclu dans le template ARM) qui va:
+1- Fixer les variables d'environnement de la machine (login/mdp... etc)
+2- Désactiver le Windows Azure Guest Agent qui permet à Azure de contrôler une VM (autrement dit on ramène la VM à l'état d'une VM on-premises)
+3- Réaliser l'onboarding de la VM en installant l'agent Arc (comme on le ferait avec une VM on-premises)
 
-
-# Créons un Principal de Service avec le rôle de Contributeur:
+# Allons-y:
+# Créons un Principal de Service avec le rôle de Contributeur qui nous permettra d'accéder à la VM:
   subscriptionId=$(az account show --query id --output tsv)
   az ad sp create-for-rbac -n "<Unique SP Name>" --role "Contributor" --scopes /subscriptions/$subscriptionId
 
