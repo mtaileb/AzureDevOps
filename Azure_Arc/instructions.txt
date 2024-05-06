@@ -17,7 +17,7 @@
 
 # Option 1: Pour un déploiement via Azure Portal (version graphique), voir le support (nota: récupérer les informations d'output déjà sauvegardées: ID app, mdp, ID tenan pour remplir le formulaire)
 # Ensuite aller dans le groupe de sécurité déployé (Arc-Win-Demo-NSG), puis dans traffic entrant, et ajouter une règle de connexion RDP en autorisant l'adresse IP locale (AllowMyIPAddressRDPInbound)
-# Se connecter à la machine en RDP pour voir le script d'activation Arc s'exécuter (il est possible qu'il ait fini de s'exécuter lorsque vous vous connectez)
+# Se connecter à la machine en RDP pour ouvrir une session Windows et lancer le script d'activation Arc.
 # Pour vérifier qu'Arc a été activé avec succès sur cette machine, raffraichir le groupe de ressources, on devrait y voir une ressource supplémentaire 'Arc-Win-Demo' de type 'Machine - Azure Arc'
 
 # Option 2: Déploiement par la ligne de commande:
@@ -35,6 +35,8 @@ nano azure_arc_servers_jumpstart/azure/windows/arm_template/azuredeploy.paramete
   --name <The name of this deployment> \
   --template-uri https://raw.githubusercontent.com/microsoft/azure_arc/main/azure_arc_servers_jumpstart/azure/windows/arm_template/azuredeploy.json \
   --parameters <The _azuredeploy.parameters.json_ parameters file location>
+
+# Se connecter à la machine en RDP pour ouvrir une session Windows et lancer le script d'activation Arc.
 
 # Une fois le provisioning terminé, pour vérifier qu'Arc a été activé avec succès sur cette machine, raffraichir le groupe de ressources dans Azure Portal, on devrait y voir une ressource supplémentaire 'Arc-Win-Demo' de type 'Machine - Azure Arc'
 
