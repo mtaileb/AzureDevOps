@@ -26,6 +26,7 @@ git clone https://github.com/microsoft/azure_arc.git
 
 # Editer le fichier azuredeploy.parameters.json en entrant les paramètres mis de côté précédemment (voir ligne 7)
 nano azure_arc_servers_jumpstart/azure/windows/arm_template/azuredeploy.parameters.json
+# Nota: désactivez Bastion (mettre la ligne 36 à 'false') car il est facturé mais n'est pas nécessaire.
 
 # Une fois le fichier complété, on peut commencer le déploiement, qui comme on peut le voir à la ligne 36, va récupérer les paramètres dans ce même fichier qu'on a complété. Mettez-vous dans le répertoire qui a été cloné ('azure_arc') et lancez les commandes suivantes:
   az group create --name <Name of the Azure resource group> --location <Azure Region> --tags "Project=jumpstart_azure_arc_servers"
