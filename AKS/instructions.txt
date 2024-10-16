@@ -54,6 +54,7 @@ kubectl get service store-front --watch
 store-front   LoadBalancer   10.0.34.242   <pending>     80:30676/TCP   5s
 # Puis l'adresse IP finale devrait apparaitre à la place de 'pending':
 store-front   LoadBalancer   10.0.34.242   52.179.23.131   80:30676/TCP   67s
+# Faire Ctrl+C pour quitter le moe suspendu du terminal.
 # On peut visualiser les pods:
 kubectl get pods
 # Supprimez un des pods; puis réexécutez kubectl get pods:
