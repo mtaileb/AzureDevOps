@@ -45,7 +45,7 @@ containers:
 
 # DEPLOIEMENT DE L'APPLICATION:
 kubectl apply -f aks-store-quickstart.yaml
-# Vous devriez voir en output que chacun des srvices est déployé et créé.
+# Vous devriez voir en output que chacun des services est déployé et créé.
 
 # TEST DE L'APPLICATION:
 # K8s expose l'application via l'URL publique au bout de quelques secondes ou minutes. Pour surveiller en temps réel sa disponibilité publique (Nota: --watch suspend le terminal):
