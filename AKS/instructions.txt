@@ -61,4 +61,4 @@ kubectl get pods
 kubectl delete pods pod_name --grace-period=0 --force
 # Que s'est-il passé?
 
-# Ouvrir l'appli via l'URL indiquée.
+# Ouvrir l'appli via l'adresse IP externe du cluster indiquée ci-haut (52.179.23.131 dans le présent exemple).
