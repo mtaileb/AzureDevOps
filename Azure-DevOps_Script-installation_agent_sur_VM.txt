@@ -1,3 +1,5 @@
+https://vstsagentpackage.azureedge.net/agent/3.246.0/vsts-agent-win-x64-3.246.0.zip
+
 cd C:\
 mkdir agent ; cd agent
 Add-Type -AssemblyName System.IO.Compression.FileSystem ; [System.IO.Compression.ZipFile]::ExtractToDirectory("$HOME\Downloads\vsts-agent-win-x64-3.218.0.zip", "$PWD")
